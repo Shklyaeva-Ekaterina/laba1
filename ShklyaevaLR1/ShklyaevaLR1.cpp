@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+
 using namespace std;
 void Menu();
 void Mistake();
@@ -394,6 +396,97 @@ int main()
             else {
                 cout << "You don't have a compressor station to edit";
             }
+        }
+        if (choice == 6) {
+            if (P.length > 0) {
+                // Создаем объект ofstream для записи в файл
+                ofstream outFile("pipe.txt");
+                // Запись данных в файл
+                outFile << endl << P.name << endl << P.length << endl << P.diametr << endl << P.repair; // Записываем строку в файл
+                // Закрываем файл
+                outFile.close();
+            }
+            if (C.workshop > 0) {
+                // Создаем объект ofstream для записи в файл
+                ofstream outFile("compress.txt");
+                // Запись данных в файл
+                outFile << endl << C.name << endl << C.workshop << endl << C.realworkshop << endl << C.effect; // Записываем строку в файл
+                // Закрываем файл
+                outFile.close();
+            }
+        }
+        if (choice == 7) {
+            ifstream inFile("pipe.txt");
+            // Проверяем, удалось ли открыть файл
+            if (inFile) {
+                string line;
+                // Чтение строк из файла
+                int lineNumber = 0; // Счетчик строк
+                string fromfile; //
+                while (getline(inFile, line)) {
+                    lineNumber++;
+                    // Проверяем, является ли это строка с возрастом
+                    if (lineNumber == 1) { // Если это первая строка
+                        // Извлекаем значение имени
+                        inFile >> P.name;
+                    }
+                    if (lineNumber == 2) {
+                        // Извлекаем значение имени
+                        inFile >> fromfile;
+                        P.length = stoi(fromfile);
+                    }
+                    if (lineNumber == 3){
+                        inFile >> fromfile;
+                        P.diametr = stoi(fromfile);
+                    }
+                    if (lineNumber == 4) {
+                        inFile >> fromfile;
+                        if (fromfile == "1") {
+                            P.repair = 1;
+                        }
+                        else{
+                            P.repair = 0;
+                        }
+                    }
+                }
+                // Закрываем файл
+                inFile.close();
+                ifstream inFile("compress.txt");
+                // Проверяем, удалось ли открыть файл
+                if (inFile) {
+                    string line;
+                    // Чтение строк из файла
+                    int lineNumber = 0; // Счетчик строк
+                    string fromfile; //ПЕременная куда будут считываться данные из файла до их преобразования
+                    while (getline(inFile, line)) {
+                        lineNumber++;
+                        // Проверяем, является ли это строка с возрастом
+                        if (lineNumber == 1) { // Если это первая строка
+                            // Извлекаем значение имени
+                            inFile >> C.name;
+                        }
+                        if (lineNumber == 2) {
+                            // Извлекаем значение имени
+                            inFile >> fromfile;
+                            C.workshop = stoi(fromfile);
+                        }
+                        if (lineNumber == 3) {
+                            inFile >> fromfile;
+                            C.realworkshop = stoi(fromfile);
+                        }
+                        if (lineNumber == 4) {
+                            inFile >> fromfile;
+                            C.effect = stod(fromfile);
+                        }
+                    }
+                    // Закрываем файл
+                    inFile.close();
+
+                }
+            }
+        }
+        if (choice == 0) {
+            break;
         }
     }
 };
